@@ -1,6 +1,6 @@
-# Practice Crud Resfull API with Exspress JS, Body-Parse, and MySQL
+# Practice Crud Resfull API with Exspress JS, Body-Parse, MySQL, dan Validate JS
 
-Pembuatan API Exspress sudah pada tahap Slicing MVC
+Pembuatan API Express sudah pada tahap Slicing MVC dan Validasi dengan Validate JS
 
 ## Install
 
