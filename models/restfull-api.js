@@ -1,15 +1,14 @@
 const koneksi = require("../config/database");
 const { responseData, responseMessage } = require("../utils/response-handler");
+const ErrorResponse = require("../utils/errorResponse");
 
 //fungsi insert data
-exports.insertResfullApi = (response, statement, data) => {
+exports.insertResfullApi = (response, statement, data, next) => {
   // jalankan query
   koneksi.query(statement, data, (err, rows, field) => {
     // error handling
     if (err) {
-      return response
-        .status(500)
-        .json({ message: "Gagal insert data!", error: err });
+      return next(new ErrorResponse(err.message, 500));
     }
 
     // jika request berhasil
@@ -17,14 +16,12 @@ exports.insertResfullApi = (response, statement, data) => {
   });
 };
 
-exports.getResfullApi = (response, statement) => {
+exports.getResfullApi = (response, statement, next) => {
   // jalankan query
   koneksi.query(statement, (err, rows, field) => {
     // error handling
     if (err) {
-      return response
-        .status(500)
-        .json({ message: "Ada kesalahan", error: err });
+      return next(new ErrorResponse(err.message, 500));
     }
 
     // jika request berhasil
@@ -32,14 +29,19 @@ exports.getResfullApi = (response, statement) => {
   });
 };
 
-exports.updateRestfullApi = (response, querySearch, queryUpdate, id, data) => {
+exports.updateRestfullApi = (
+  response,
+  querySearch,
+  queryUpdate,
+  id,
+  data,
+  next
+) => {
   // jalankan query untuk melakukan pencarian data
   koneksi.query(querySearch, id, (err, rows, field) => {
     // error handling
     if (err) {
-      return response
-        .status(500)
-        .json({ message: "Ada kesalahan", error: err });
+      return next(new ErrorResponse(err.message, 500));
     }
 
     // jika id yang dimasukkan sesuai dengan data yang ada di db
@@ -48,9 +50,7 @@ exports.updateRestfullApi = (response, querySearch, queryUpdate, id, data) => {
       koneksi.query(queryUpdate, [data, id], (err, rows, field) => {
         // error handling
         if (err) {
-          return response
-            .status(500)
-            .json({ message: "Ada kesalahan", error: err });
+          return next(new ErrorResponse(err.message, 500));
         }
 
         // jika update berhasil
@@ -64,14 +64,12 @@ exports.updateRestfullApi = (response, querySearch, queryUpdate, id, data) => {
   });
 };
 
-exports.deleteRestfullApi = (response, querySearch, queryDelete, id) => {
+exports.deleteRestfullApi = (response, querySearch, queryDelete, id, next) => {
   // jalankan query untuk melakukan pencarian data
   koneksi.query(querySearch, id, (err, rows, field) => {
     // error handling
     if (err) {
-      return response
-        .status(500)
-        .json({ message: "Ada kesalahan", error: err });
+      return next(new ErrorResponse(err.message, 500));
     }
 
     // jika id yang dimasukkan sesuai dengan data yang ada di db
@@ -80,9 +78,7 @@ exports.deleteRestfullApi = (response, querySearch, queryDelete, id) => {
       koneksi.query(queryDelete, id, (err, rows, field) => {
         // error handling
         if (err) {
-          return response
-            .status(500)
-            .json({ message: "Ada kesalahan", error: err });
+          return next(new ErrorResponse(err.message, 500));
         }
 
         // jika delete berhasil
